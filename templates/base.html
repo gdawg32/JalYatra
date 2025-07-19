@@ -1,0 +1,399 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>{% block title %}JalYatra{% endblock %}</title>
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Optimized CSS loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.js" defer></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        * { 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth;
+        }
+
+        /* Enhanced Ripple Effect */
+        .ripple-effect {
+            position: relative;
+            overflow: hidden;
+            transform: perspective(1px) translateZ(0);
+        }
+
+        .ripple-effect::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease-out, height 0.4s ease-out;
+            pointer-events: none;
+        }
+
+        .ripple-effect:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        /* Glass morphism effect */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Improved navbar blur */
+        .navbar-blur {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        /* Mobile menu animation */
+        .mobile-menu {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #3b82f6, #06b6d4);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #2563eb, #0891b2);
+        }
+
+        /* Hide scrollbar for mobile */
+        @media (max-width: 768px) {
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        /* Smooth transitions for all interactive elements */
+        .btn, .link, .menu li > *:not(.menu-title) {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Focus styles for accessibility */
+        .btn:focus-visible, 
+        .link:focus-visible,
+        .menu li > *:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+
+        /* Mobile navigation improvements */
+        @media (max-width: 1023px) {
+            .navbar-end {
+                gap: 0.25rem;
+            }
+            
+            .navbar-end .btn {
+                font-size: 0.75rem;
+                padding: 0.375rem 0.75rem;
+                min-height: 2rem;
+                height: 2rem;
+            }
+        }
+
+        /* Improved button styles */
+        .btn-gradient-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #0891b2 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-cyan-50 antialiased" 
+      x-data="{ mobileMenuOpen: false, scrolled: false }"
+      x-init="window.addEventListener('scroll', () => scrolled = window.pageYOffset > 10)">
+
+    <!-- Enhanced Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+         :class="scrolled ? 'navbar-blur shadow-lg' : 'bg-white/70 backdrop-blur-sm'"
+         role="navigation" 
+         aria-label="Main navigation">
+         
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 lg:h-20">
+                
+                <!-- Logo/Brand -->
+                <div class="flex-shrink-0">
+                    <a href="/" 
+                       class="flex items-center space-x-3 text-xl lg:text-2xl font-bold transition-all duration-200 hover:scale-105"
+                       aria-label="JalYatra Home">
+                        <span class="bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                            JalYatra
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex lg:items-center lg:space-x-8">
+                    <div class="flex space-x-6">
+                        <a href="#features" 
+                           class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group">
+                            Features
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                        </a>
+                        <a href="#about" 
+                           class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group">
+                            About
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                        </a>
+                        <a href="#contact" 
+                           class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 relative group">
+                            Contact
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-200 group-hover:w-full"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Desktop Action Buttons -->
+                <div class="hidden lg:flex lg:items-center lg:space-x-3">
+                    <a href="/customer" 
+                       class="btn btn-ghost btn-sm hover:bg-blue-50 hover:text-blue-600 ripple-effect">
+                        Customer
+                    </a>
+                    <a href="{% url "station_master_login" %}" 
+                       class="btn btn-ghost btn-sm hover:bg-blue-50 hover:text-blue-600 ripple-effect">
+                        Station Master
+                    </a>
+                    <a href="{% url "admin_login" %}" 
+                       class="btn btn-ghost btn-sm hover:bg-blue-50 hover:text-blue-600 ripple-effect">
+                        Admin
+                    </a>
+                    <a href="/tourist-support" 
+                       class="btn btn-gradient-primary btn-sm ripple-effect shadow-lg">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Tourist Help
+                    </a>
+                </div>
+
+                <!-- Mobile Action Buttons -->
+                <div class="flex lg:hidden items-center space-x-2">
+                    <a href="/customer" 
+                       class="btn btn-ghost btn-xs text-xs px-2 hover:bg-blue-50 hover:text-blue-600">
+                        Customer
+                    </a>
+                    <a href="/tourist-support" 
+                       class="btn btn-gradient-primary btn-xs text-xs px-2 shadow-md">
+                        Help
+                    </a>
+                    
+                    <!-- Mobile menu button -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" 
+                            class="btn btn-ghost btn-sm p-2 ml-2"
+                            :aria-expanded="mobileMenuOpen"
+                            aria-label="Toggle mobile menu">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 transform scale-95"
+             x-transition:enter-end="opacity-100 transform scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 transform scale-100"
+             x-transition:leave-end="opacity-0 transform scale-95"
+             class="lg:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 shadow-lg"
+             @click.outside="mobileMenuOpen = false">
+            
+            <div class="px-4 py-6 space-y-4">
+                <!-- Mobile Navigation Links -->
+                <div class="space-y-3">
+                    <a href="#features" 
+                       @click="mobileMenuOpen = false"
+                       class="block text-gray-700 hover:text-blue-600 font-medium py-2 px-3 rounded-lg hover:bg-blue-50 transition-all duration-200">
+                        Features
+                    </a>
+                    <a href="#about" 
+                       @click="mobileMenuOpen = false"
+                       class="block text-gray-700 hover:text-blue-600 font-medium py-2 px-3 rounded-lg hover:bg-blue-50 transition-all duration-200">
+                        About
+                    </a>
+                    <a href="#contact" 
+                       @click="mobileMenuOpen = false"
+                       class="block text-gray-700 hover:text-blue-600 font-medium py-2 px-3 rounded-lg hover:bg-blue-50 transition-all duration-200">
+                        Contact
+                    </a>
+                </div>
+                
+                <hr class="border-gray-200">
+                
+                <!-- Mobile Action Buttons -->
+                <div class="space-y-2">
+                    <a href="{% url "station_master_login" %}r" 
+                       class="btn btn-outline btn-sm w-full justify-start hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Station Master Portal
+                    </a>
+                    <a href="/admin" 
+                       class="btn btn-outline btn-sm w-full justify-start hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Admin Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content with proper spacing for fixed navbar -->
+    <main class="pt-16 lg:pt-20">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="bg-gradient-to-r from-slate-900 via-blue-900 to-cyan-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+                
+                <!-- Brand Section -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-3xl">🚢</span>
+                        <span class="text-xl font-bold">JalYatra</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Connecting Kerala's communities through modern, safe, and sustainable water transport services.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button class="btn btn-circle btn-ghost btn-sm hover:bg-white/10">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-circle btn-ghost btn-sm hover:bg-white/10">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg">Quick Links</h3>
+                    <div class="space-y-2">
+                        <a href="#features" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Features</a>
+                        <a href="#about" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">About Us</a>
+                        <a href="#contact" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Contact</a>
+                        <a href="/customer" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Customer Portal</a>
+                    </div>
+                </div>
+
+                <!-- Services -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg">Services</h3>
+                    <div class="space-y-2">
+                        <a href="{% url "station_master_login" %}" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Station Master</a>
+                        <a href="/admin" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Admin Panel</a>
+                        <a href="/tourist-support" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Tourist Support</a>
+                        <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Emergency Services</a>
+                    </div>
+                </div>
+
+                <!-- Legal -->
+                <div class="space-y-4">
+                    <h3 class="font-semibold text-lg">Legal</h3>
+                    <div class="space-y-2">
+                        <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Privacy Policy</a>
+                        <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Terms of Service</a>
+                        <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Accessibility</a>
+                        <a href="#" class="block text-gray-300 hover:text-white transition-colors duration-200 text-sm">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-700 my-8">
+
+            <!-- Bottom Footer -->
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-gray-300 text-sm text-center md:text-left">
+                    © 2025 State Water Transport Department, Kerala. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-4 text-sm text-gray-300">
+                    <span>Made with ❤️ for Kerala</span>
+                    <span class="hidden md:inline">|</span>
+                    <span class="flex items-center space-x-1">
+                        <span>🚤</span>
+                        <span>Connecting Communities</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button x-show="scrolled" 
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+            class="fixed bottom-6 right-6 btn btn-circle btn-gradient-primary shadow-lg z-40 hover:scale-110"
+            aria-label="Scroll to top">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
