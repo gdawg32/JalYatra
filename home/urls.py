@@ -11,7 +11,7 @@ urlpatterns = [
     path('process-booking/', views.process_booking, name='process_booking'),
     path('booking-success/<int:booking_id>/', views.booking_success, name='booking_success'),
     path('station-master-login/', views.station_master_login, name='station_master_login'),
-
+    path('sm_dashboard/',views.sm_dashboard, name="sm_dashboard")
 
    
 ]

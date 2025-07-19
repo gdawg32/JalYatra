@@ -1,0 +1,564 @@
+{% extends 'base.html' %}
+
+{% block title %}Station Master{% endblock %}
+
+{% block content %}
+
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                animation: {
+                    'pulse-soft': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    'bounce-subtle': 'bounce 1s ease-in-out 2',
+                    'fade-in': 'fadeIn 0.3s ease-out',
+                    'slide-up': 'slideUp 0.4s ease-out',
+                    'radar-sweep': 'radarSweep 3s linear infinite',
+                    'float': 'float 6s ease-in-out infinite',
+                    'glow': 'glow 2s ease-in-out infinite alternate',
+                },
+                keyframes: {
+                    fadeIn: {
+                        '0%': { opacity: '0', transform: 'translateY(10px)' },
+                        '100%': { opacity: '1', transform: 'translateY(0)' }
+                    },
+                    slideUp: {
+                        '0%': { opacity: '0', transform: 'translateY(20px)' },
+                        '100%': { opacity: '1', transform: 'translateY(0)' }
+                    },
+                    radarSweep: {
+                        '0%': { transform: 'rotate(0deg)' },
+                        '100%': { transform: 'rotate(360deg)' }
+                    },
+                    float: {
+                        '0%, 100%': { transform: 'translateY(0px)' },
+                        '50%': { transform: 'translateY(-10px)' }
+                    },
+                    glow: {
+                        '0%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)' },
+                        '100%': { boxShadow: '0 0 40px rgba(59, 130, 246, 0.6)' }
+                    }
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<!-- Background Effects -->
+<div class="fixed inset-0 opacity-20">
+    <div class="absolute top-20 left-20 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+    <div class="absolute top-40 right-20 w-64 h-64 bg-cyan-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+    <div class="absolute bottom-40 left-32 w-64 h-64 bg-teal-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-2000"></div>
+</div>
+
+<div class="relative z-10 min-h-screen p-4 lg:p-8">
+    
+    <!-- Header -->
+    <div class="mb-8 animate-fade-in">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <div class="space-y-2">
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                        <div class="absolute w-3 h-3 top-0 left-0 bg-green-400 rounded-full animate-ping"></div>
+                    </div>
+                    <span class="text-green-400 text-sm font-medium">Station Active</span>
+                    <span class="text-gray-400 text-sm">Last sync: 2 mins ago</span>
+                </div>
+                <h1 class="text-3xl lg:text-4xl font-black text-white">
+                    Station Master <span class="bg-gradient-to-r from-cyan-300 to-teal-300 bg-clip-text text-transparent">Control Panel</span>
+                </h1>
+                <p class="text-blue-200 text-base lg:text-lg">Real-time monitoring and passenger management system</p>
+            </div>
+            
+            <!-- Station Info Card -->
+            <div class="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-4 lg:p-6">
+                <div class="flex items-center space-x-3">
+                    <div class="animate-float">
+                        <!-- Passenger Ship Icon -->
+                        <svg class="w-8 h-8 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 32 32" stroke-width="2">
+                            <path d="M3 22L16 7l13 15" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <rect x="7" y="22" width="18" height="5" rx="2" fill="#67e8f9" stroke="currentColor" stroke-width="2"/>
+                            <ellipse cx="16" cy="27" rx="11" ry="2" fill="#22d3ee"/>
+                            <rect x="14" y="15" width="4" height="5" fill="#06b6d4" stroke="currentColor" stroke-width="1"/>
+                            <circle cx="12" cy="24" r="1.2" fill="#0891b2"/>
+                            <circle cx="20" cy="24" r="1.2" fill="#0891b2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-white font-semibold text-lg">Kochi Central Station</p>
+                        <p class="text-blue-200 text-sm">Station Master: SM-KC01</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        
+        <!-- Live Fleet Monitor (Mini Control Tower) -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Fleet Monitor Header -->
+            <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-6 lg:p-8 animate-slide-up">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center animate-glow">
+                            <i class="fas fa-radar-dish text-2xl text-white animate-spin" style="animation-duration: 3s;"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl lg:text-3xl font-bold text-white">Live Fleet Monitor</h2>
+                            <p class="text-blue-200">Mini Control Tower - Real-time tracking</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-cyan-300 text-sm font-medium">12 Active Ferries</p>
+                        <p class="text-gray-400 text-xs">Updated every 10s</p>
+                    </div>
+                </div>
+
+                <!-- Radar Display -->
+                <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 mb-6">
+                    <div class="flex items-center justify-center h-48 lg:h-64 relative">
+                        <!-- Radar Circles -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-32 h-32 border border-green-400/30 rounded-full"></div>
+                            <div class="absolute w-24 h-24 border border-green-400/40 rounded-full"></div>
+                            <div class="absolute w-16 h-16 border border-green-400/50 rounded-full"></div>
+                            <div class="absolute w-8 h-8 border border-green-400/60 rounded-full"></div>
+                        </div>
+                        
+                        <!-- Radar Sweep -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-32 h-32 relative">
+                                <div class="absolute top-0 left-1/2 w-0.5 h-16 bg-gradient-to-b from-green-400 to-transparent transform -translate-x-0.5 animate-radar-sweep origin-bottom"></div>
+                            </div>
+                        </div>
+
+                        <!-- Ferry Positions -->
+                        <div class="absolute top-1/4 left-1/3 w-3 h-3 bg-green-400 rounded-full animate-pulse">
+                            <div class="absolute -top-6 -left-8 text-xs text-green-400 whitespace-nowrap">Ferry KC-01</div>
+                        </div>
+                        <div class="absolute top-3/4 right-1/3 w-3 h-3 bg-yellow-400 rounded-full animate-pulse">
+                            <div class="absolute -top-6 -left-8 text-xs text-yellow-400 whitespace-nowrap">Ferry KC-02</div>
+                        </div>
+                        <div class="absolute bottom-1/4 left-1/2 w-3 h-3 bg-blue-400 rounded-full animate-pulse">
+                            <div class="absolute -top-6 -left-8 text-xs text-blue-400 whitespace-nowrap">Ferry KC-03</div>
+                        </div>
+                    </div>
+
+                    <!-- Station Center -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <div class="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
+                        <div class="absolute -bottom-6 -left-4 text-xs text-red-400 whitespace-nowrap">Station</div>
+                    </div>
+                </div>
+
+                <!-- Fleet Status Grid -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-green-500/20 border border-green-500/30 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-green-400">8</div>
+                        <div class="text-green-300 text-sm">En Route</div>
+                    </div>
+                    <div class="bg-yellow-500/20 border border-yellow-500/30 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-yellow-400">2</div>
+                        <div class="text-yellow-300 text-sm">Docking</div>
+                    </div>
+                    <div class="bg-blue-500/20 border border-blue-500/30 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-400">2</div>
+                        <div class="text-blue-300 text-sm">Loading</div>
+                    </div>
+                    <div class="bg-red-500/20 border border-red-500/30 rounded-xl p-4 text-center">
+                        <div class="text-2xl font-bold text-red-400">0</div>
+                        <div class="text-red-300 text-sm">Emergency</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passenger Load & Weight Monitoring -->
+            <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-6 lg:p-8 animate-slide-up animate-delay-200">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-weight-hanging text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Passenger Load & Weight Monitor</h3>
+                            <p class="text-blue-200">Real-time capacity and weight tracking</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-white">847</div>
+                        <div class="text-purple-300 text-sm">Current Passengers</div>
+                    </div>
+                </div>
+
+                <!-- Load Gauges -->
+                <div class="space-y-4">
+                    <!-- Ferry KC-01 -->
+                    <div class="bg-white/5 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                                <span class="text-white font-semibold">Ferry KC-01</span>
+                            </div>
+                            <span class="text-green-400 text-sm">185/200 passengers</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3 mb-2">
+                            <div class="bg-gradient-to-r from-green-400 to-yellow-400 h-3 rounded-full animate-pulse" style="width: 92.5%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Weight: 14.2 tons</span>
+                            <span>92.5% Capacity</span>
+                        </div>
+                    </div>
+
+                    <!-- Ferry KC-02 -->
+                    <div class="bg-white/5 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                                <span class="text-white font-semibold">Ferry KC-02</span>
+                            </div>
+                            <span class="text-yellow-400 text-sm">156/180 passengers</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3 mb-2">
+                            <div class="bg-gradient-to-r from-blue-400 to-cyan-400 h-3 rounded-full animate-pulse" style="width: 86.7%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Weight: 11.8 tons</span>
+                            <span>86.7% Capacity</span>
+                        </div>
+                    </div>
+
+                    <!-- Ferry KC-03 -->
+                    <div class="bg-white/5 rounded-xl p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                                <span class="text-white font-semibold">Ferry KC-03</span>
+                            </div>
+                            <span class="text-blue-400 text-sm">89/150 passengers</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-3 mb-2">
+                            <div class="bg-gradient-to-r from-purple-400 to-pink-400 h-3 rounded-full animate-pulse" style="width: 59.3%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Weight: 6.8 tons</span>
+                            <span>59.3% Capacity</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - QR Code Monitor & Controls -->
+        <div class="space-y-6">
+            
+            <!-- QR Code Check-in Monitor -->
+            <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-6 animate-slide-up animate-delay-300">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-green-500 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-qrcode text-xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">QR Check-in Monitor</h3>
+                            <p class="text-blue-200 text-sm">Live passenger scanning</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-lg font-bold text-green-400">42</div>
+                        <div class="text-green-300 text-xs">Scans/min</div>
+                    </div>
+                </div>
+
+                <!-- QR Scanner Button -->
+                <div class="text-center mb-6">
+                    <button id="qrScannerBtn" class="w-full bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white py-4 px-6 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 animate-glow">
+                        <i class="fas fa-camera text-2xl mb-2 block"></i>
+                        Start QR Scanner
+                    </button>
+                </div>
+
+                <!-- Recent Check-ins -->
+                <div class="space-y-3 max-h-48 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300">
+                    <div class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl animate-fade-in">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm font-medium">Ticket #KC240719001</p>
+                            <p class="text-gray-400 text-xs">2s ago • 1 Adult</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-400"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl animate-fade-in">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm font-medium">Ticket #KC240719002</p>
+                            <p class="text-gray-400 text-xs">5s ago • 2 Adults, 1 Child</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-400"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl animate-fade-in">
+                        <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm font-medium">Ticket #KC240719003</p>
+                            <p class="text-gray-400 text-xs">8s ago • 1 Adult</p>
+                        </div>
+                        <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl animate-fade-in">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm font-medium">Ticket #KC240719004</p>
+                            <p class="text-gray-400 text-xs">12s ago • 3 Adults</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-400"></i>
+                    </div>
+
+                    <div class="flex items-center space-x-3 p-3 bg-white/5 rounded-xl animate-fade-in">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <div class="flex-1">
+                            <p class="text-white text-sm font-medium">Ticket #KC240719005</p>
+                            <p class="text-gray-400 text-xs">15s ago • 1 Adult, 2 Children</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-400"></i>
+                    </div>
+                </div>
+
+                <!-- QR Statistics -->
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                    <div class="bg-green-500/20 border border-green-500/30 rounded-lg p-3 text-center">
+                        <div class="text-xl font-bold text-green-400">487</div>
+                        <div class="text-green-300 text-xs">Valid Scans</div>
+                    </div>
+                    <div class="bg-red-500/20 border border-red-500/30 rounded-lg p-3 text-center">
+                        <div class="text-xl font-bold text-red-400">3</div>
+                        <div class="text-red-300 text-xs">Invalid Scans</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Station Controls -->
+            <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-6 animate-slide-up animate-delay-400">
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                    <i class="fas fa-cogs text-cyan-300 mr-2"></i>
+                    Station Controls
+                </h3>
+                
+                <div class="space-y-3">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-broadcast-tower mr-2"></i>
+                        Emergency Announcement
+                    </button>
+                    
+                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-ship mr-2"></i>
+                        Ferry Dispatch Control
+                    </button>
+                    
+                    <button class="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-tools mr-2"></i>
+                        Maintenance Request
+                    </button>
+                    
+                    <button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Generate Daily Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Weather & Conditions -->
+            <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-6 animate-slide-up animate-delay-500">
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                    <i class="fas fa-cloud-sun text-yellow-300 mr-2"></i>
+                    Weather Conditions
+                </h3>
+                
+                <div class="text-center mb-4">
+                    <div class="text-3xl text-yellow-300 mb-2">☀️</div>
+                    <div class="text-2xl font-bold text-white">28°C</div>
+                    <div class="text-blue-200 text-sm">Clear Skies</div>
+                </div>
+                
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Wind Speed:</span>
+                        <span class="text-white">12 km/h</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Wave Height:</span>
+                        <span class="text-green-400">0.5m - Safe</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Visibility:</span>
+                        <span class="text-white">8 km</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Tide:</span>
+                        <span class="text-blue-400">High (2.1m)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Status Bar -->
+    <div class="mt-8 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-4 animate-fade-in">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            <div class="flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span class="text-green-400">System Online</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    <span class="text-blue-400">GPS Active</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <span class="text-yellow-400">Network: 98ms</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 text-sm">
+                <span class="text-gray-400">Last Updated:</span>
+                <span class="text-white" id="lastUpdated">19 Jul 2025, 1:57 PM</span>
+                <button class="text-cyan-400 hover:text-cyan-300 transition-colors">
+                    <i class="fas fa-sync-alt animate-spin"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR Scanner Modal (Hidden by default) -->
+<div id="qrModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 p-8 max-w-md w-full">
+        <div class="text-center">
+            <div class="w-20 h-20 bg-gradient-to-br from-teal-500 to-green-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <i class="fas fa-qrcode text-3xl text-white"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">QR Scanner Active</h3>
+            <p class="text-blue-200 mb-6">Position QR code within the frame</p>
+            
+            <!-- Scanner Frame -->
+            <div class="relative bg-gray-800 rounded-xl p-4 mb-6">
+                <div class="w-48 h-48 mx-auto border-2 border-green-400 rounded-lg relative animate-pulse">
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-green-400"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-green-400"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-green-400"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-green-400"></div>
+                    
+                    <!-- Scanning Line -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-green-400 animate-pulse"></div>
+                </div>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button id="closeQrModal" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300">
+                    Cancel
+                </button>
+                <button class="flex-1 bg-gradient-to-r from-teal-600 to-green-600 hover:from-teal-700 hover:to-green-700 text-white py-3 px-4 rounded-xl font-medium transition-all duration-300">
+                    Manual Entry
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // QR Scanner Modal functionality
+    const qrScannerBtn = document.getElementById('qrScannerBtn');
+    const qrModal = document.getElementById('qrModal');
+    const closeQrModal = document.getElementById('closeQrModal');
+
+    qrScannerBtn.addEventListener('click', () => {
+        qrModal.classList.remove('hidden');
+    });
+
+    closeQrModal.addEventListener('click', () => {
+        qrModal.classList.add('hidden');
+    });
+
+    // Close modal when clicking outside
+    qrModal.addEventListener('click', (e) => {
+        if (e.target === qrModal) {
+            qrModal.classList.add('hidden');
+        }
+    });
+
+    // Real-time updates simulation
+    function updateTimestamp() {
+        const now = new Date();
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: '2-digit',
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        };
+        document.getElementById('lastUpdated').textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    // Update timestamp every minute
+    setInterval(updateTimestamp, 60000);
+
+    // Simulate real-time data updates
+    function simulateRealTimeUpdates() {
+        // Simulate new QR scans
+        const qrList = document.querySelector('.space-y-3.max-h-48');
+        const scanCount = Math.floor(Math.random() * 3) + 1;
+        
+        for (let i = 0; i < scanCount; i++) {
+            setTimeout(() => {
+                const newScan = document.createElement('div');
+                newScan.className = 'flex items-center space-x-3 p-3 bg-white/5 rounded-xl animate-fade-in';
+                newScan.innerHTML = `
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <div class="flex-1">
+                        <p class="text-white text-sm font-medium">Ticket #KC240719${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}</p>
+                        <p class="text-gray-400 text-xs">Just now • ${Math.floor(Math.random() * 3) + 1} Adult${Math.floor(Math.random() * 3) + 1 > 1 ? 's' : ''}</p>
+                    </div>
+                    <i class="fas fa-check-circle text-green-400"></i>
+                `;
+                qrList.prepend(newScan);
+                
+                // Remove old entries to keep list manageable
+                if (qrList.children.length > 8) {
+                    qrList.removeChild(qrList.lastChild);
+                }
+            }, i * 2000);
+        }
+    }
+
+    // Simulate updates every 10 seconds
+    setInterval(simulateRealTimeUpdates, 10000);
+
+    // Initialize
+    updateTimestamp();
+</script>
+
+<style>
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 4px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.6);
+        border-radius: 2px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        background: rgba(59, 130, 246, 0.8);
+    }
+</style>
+{% endblock %}

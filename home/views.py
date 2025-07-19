@@ -271,4 +271,21 @@ def booking_success(request, booking_id):
     return render(request, 'booking_success.html', context)
 
 def station_master_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('sm_dashboard')
+        else:
+            return render(request, 'station_master_login.html', {
+                    'error': 'You are not authorized to access the admin dashboard.'
+                })
+
     return render(request, 'station_master_login.html')
+
+def sm_dashboard(request):
+    return render(request, 'sm_dashboard.html')
